@@ -4,8 +4,6 @@ import (
 	"os"
 
 	"github.com/alexpfx/go_common/exception"
-	"github.com/alexpfx/go_common/slices"
-
 	"github.com/urfave/cli/v2"
 )
 
