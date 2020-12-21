@@ -5,8 +5,8 @@ import "regexp"
 type Item struct {
 	Name       string
 	MatchRegex string
-	Replace    func(string) string
-	Validate   func(string) bool
+	Replace    func(string) string `json:"-"`
+	Validate   func(string) bool `json:"-"`
 	MinSize    int
 	MaxSize    int
 }
