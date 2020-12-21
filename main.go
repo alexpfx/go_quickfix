@@ -36,7 +36,7 @@ func main() {
 		Action: func(context *cli.Context) error {
 
 			query := context.String("query")
-			if (query != ""){
+			if query != "" {
 				
 				return nil
 			}

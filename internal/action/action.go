@@ -6,8 +6,9 @@ type Item struct {
 	Name       string
 	MatchRegex string
 	Replace    func(string) string
-	MinSize int
-	MaxSize int
+	Validate   func(string) bool
+	MinSize    int
+	MaxSize    int
 }
 
 type List interface {
@@ -26,15 +27,15 @@ func (a list) Query(text string) []Item {
 
 	for _, action := range a.actions {
 		textLen := len(text)
-		if action.MinSize > 0 && textLen < action.MinSize{
+		if action.MinSize > 0 && textLen < action.MinSize {
 			continue
 		}
-		if action.MaxSize > 0 && textLen > action.MaxSize{
+		if action.MaxSize > 0 && textLen > action.MaxSize {
 			continue
 		}
 
 		re := regexp.MustCompile(action.MatchRegex)
-		if re.MatchString(text) {
+		if re.MatchString(text) && action.Validate(text) {
 			rItems = append(rItems, action)
 		}
 

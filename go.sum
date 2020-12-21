@@ -1,4 +1,6 @@
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
+github.com/Nhanderu/brdoc v1.1.2 h1:8omuNpCC+9FLhsATdigQxFyhed7sb2TVyJLVxUFDjWg=
+github.com/Nhanderu/brdoc v1.1.2/go.mod h1:UQQw7zlNjQJFSGooYd+uq6QqLQ2G6jAHVaeGAXUgUlk=
 github.com/alexpfx/go_common v0.0.3 h1:tSEgsoarPjNkUTp4nUXIXYRVTgkx1Y7Guc/XhWohT/Y=
 github.com/alexpfx/go_common v0.0.3/go.mod h1:+9XDUymLIbPg7OhQx0V9bthcRwoTEGuUPU05P6AzwPI=
 github.com/atotto/clipboard v0.1.2 h1:YZCtFu5Ie8qX2VmVTBnrqLSiU9XOWwqNRmdT3gIQzbY=
