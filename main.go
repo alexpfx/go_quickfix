@@ -4,6 +4,7 @@ import (
 	"os"
 
 	"github.com/alexpfx/go_common/exception"
+	"github.com/alexpfx/go_common/slices"
 
 	"github.com/urfave/cli/v2"
 )
@@ -12,11 +13,12 @@ import (
 func main() {
 
 
-	
-	
-
 	app := &cli.App{
 		Flags: []cli.Flag{
+			&cli.StringFlag{
+				Name: "query",
+				Aliases: []string{"q"},
+			},
 			&cli.BoolFlag{
 				Name:    "daemon",
 				Usage:   "Inicia o modo daemon se este não estiver sendo executado",
@@ -34,6 +36,13 @@ func main() {
 			{},
 		},
 		Action: func(context *cli.Context) error {
+
+			query := context.String("query")
+			if (query != ""){
+				
+				return nil
+			}
+
 			runDaemon := context.Bool("daemon")
 			if runDaemon {
 
