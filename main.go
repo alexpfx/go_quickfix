@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/alexpfx/go_common/str"
 	"github.com/alexpfx/go_quickfix/internal/action"
-	"github.com/atotto/clipboard"
 	"log"
 	"os"
 
@@ -17,25 +16,17 @@ func main() {
 	app := &cli.App{
 		Flags: []cli.Flag{
 			&cli.StringFlag{
-				Name:    "query",
-				Aliases: []string{"q"},
+				Name:  "query",
+				Usage: "busca na lista de actions e retorna à que atende ao pattern",
 			},
 			&cli.BoolFlag{
-				Name:    "execute",
-				Usage:   "Aplica o quickfix ao primeiro elemento retornado",
-				Aliases: []string{"x"},
+				Name:  "auto",
+				Usage: "Se o comando query retornar apenas um resultado, executa a action",
 			},
-			&cli.BoolFlag{
-				Name:    "daemon",
-				Usage:   "Inicia o modo daemon se este não estiver sendo executado",
-				Aliases: []string{"d"},
-			},
-			&cli.BoolFlag{
-				Name: "kill",
-				Aliases: []string{
-					"k",
-				},
-				Usage: "Pára o modo daemon",
+			&cli.IntFlag{
+				Name:  "execute",
+				Usage: "Executa o item de índice n. Usado em conjunto com --query",
+				Value: -1,
 			},
 		},
 		Commands: []*cli.Command{
@@ -44,36 +35,33 @@ func main() {
 		Action: func(context *cli.Context) error {
 
 			query := context.String("query")
-			execute := context.Bool("execute")
 			if query != "" {
-				items := action.All().Query(query)
+				res := action.All().Query(query)
 
-				json, err := str.FormatJson(items)
+				jsonRes, err := str.FormatJson(res)
 				exception.CheckThrow(err)
-				if len(items) == 0 {
+
+				lenRes := len(res)
+				if lenRes == 0 {
 					log.Printf("nenhum action disponível para a query: %s", query)
 					return nil
 				}
 
-				if execute {
-					first := items[0]
-					newValue := first.Replace(query)
-					_ = clipboard.WriteAll(newValue)
+				if lenRes == 1 && context.Bool("auto") {
+					execute(res, 0, query)
 				}
-				fmt.Println(json)
 
-				return nil
-			}
+				index := context.Int("execute")
+				if index == -1 {
+					fmt.Println(jsonRes)
+					return nil
+				}
 
-			runDaemon := context.Bool("daemon")
-			if runDaemon {
+				if index > lenRes {
+					exception.CheckThrow(fmt.Errorf("elemento não disponível %d", index))
+				}
 
-				return nil
-
-			}
-
-			killDaemon := context.Bool("kill")
-			if killDaemon {
+				execute(res, index, query)
 
 				return nil
 			}
@@ -84,4 +72,10 @@ func main() {
 
 	err := app.Run(os.Args)
 	exception.CheckThrow(err)
+}
+
+func execute(items []action.Item, index int, query string) {
+	item := items[index]
+	rStr := item.Replace(query)
+	fmt.Println(rStr)
 }

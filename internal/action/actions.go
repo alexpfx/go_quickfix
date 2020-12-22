@@ -18,12 +18,14 @@ func CpfToNum() Item {
 		Name: "CPF to número",
 		MatchRegex: `^\d{3}\.?\d{3}\.?\d{3}-?\d{2}$`,
 		Validate: func(s string) bool {
+
 			return true
 		},
 		Replace: func(cpf string) string {
 			s := strings.ReplaceAll(cpf, ".", "")
 			return strings.ReplaceAll(s, "-", "")
 		},
+
 		MinSize: 14,
 		MaxSize: 14,
 	}
