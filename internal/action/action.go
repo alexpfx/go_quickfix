@@ -3,12 +3,12 @@ package action
 import "regexp"
 
 type Item struct {
-	Name       string
-	MatchRegex string
+	Name       string `json:"name"`
+	MatchRegex string `json:"match_regex"`
 	Replace    func(string) string `json:"-"`
 	Validate   func(string) bool `json:"-"`
-	MinSize    int
-	MaxSize    int
+	MinSize    int `json:"min_size"`
+	MaxSize    int `json:"max_size"`
 }
 
 type List interface {
